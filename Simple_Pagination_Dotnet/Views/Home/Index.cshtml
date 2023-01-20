@@ -1,0 +1,103 @@
+﻿@using Simple_Pagination_Dotnet.Models;
+@using Simple_Pagination_Dotnet.Pagination;
+@model PaginatedList<Product>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row" id="ProductCategoriesDiv">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Products</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <form method="get" asp-controller="Home" asp-action="Index">
+                            <div class="input-group">
+                                <input type="hidden" name="pageNumber" value="1" />
+                                @if (string.IsNullOrWhiteSpace(Model.SearchText))
+                                {
+                                    <input type="text" class="form-control" placeholder="Search ..." name="SearchText">
+                                }
+                                else
+                                {
+                                    <input type="text" class="form-control" placeholder="Search ..." value="@Model.SearchText" name="SearchText">
+                                }
+                                <div class="input-group-btn">
+                                    @if (!string.IsNullOrWhiteSpace(Model.SearchText))
+                                    {
+                                        <a class="btn btn-danger" asp-controller="Home" asp-action="Index"><i class="bi bi-eraser-fill"></i></a>
+                                    }
+                                    <button class="btn btn-success" type="submit"><i class="bi bi-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                        <table data-toggle="table" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Category</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.Count > 0)
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.Id</td>
+                                            <td>@item.CategoryName</td>
+                                            <td>@item.Name</td>
+                                            <td>@item.Description</td>
+                                            <td>@item.Price</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                @if (Model.HasPrevoiusPage)
+                                {
+                                    int pageNumber = Model.PageIndex - 1;
+                                    if (!string.IsNullOrWhiteSpace(Model.SearchText))
+                                    {
+                                        <li class="page-item"><a class="page-link" asp-controller="Home" asp-action="Index" asp-route-pageIndex="@pageNumber" asp-route-pageIndex="1" asp-route-SearchText="@Model.SearchText">First Page</a></li>
+                                        <li class="page-item"><a class="page-link" asp-controller="Home" asp-action="Index" asp-route-pageIndex="@pageNumber" asp-route-SearchText="@Model.SearchText">@pageNumber</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item"><a class="page-link" asp-controller="Home" asp-action="Index" asp-route-pageIndex="1">First Page</a></li>
+                                        <li class="page-item"><a class="page-link" asp-controller="Home" asp-action="Index" asp-route-pageIndex="@pageNumber">@pageNumber</a></li>
+                                    }
+                                }
+
+                                <li class="page-item active"><a class="page-link" href="#">@Model.PageIndex</a></li>
+
+                                @if (Model.HasNextPage)
+                                {
+                                    int pageNumber = Model.PageIndex + 1;
+                                    if (!string.IsNullOrWhiteSpace(Model.SearchText))
+                                    {
+                                        <li class="page-item"><a class="page-link" asp-controller="Home" asp-action="Index" asp-route-pageIndex="@pageNumber" asp-route-SearchText="@Model.SearchText">@pageNumber</a></li>
+                                        <li class="page-item"><a class="page-link" asp-controller="Home" asp-action="Index" asp-route-pageIndex="@pageNumber" asp-route-pageIndex="@Model.TotalPages" asp-route-SearchText="@Model.SearchText">Last Page</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item"><a class="page-link" asp-controller="Home" asp-action="Index" asp-route-pageIndex="@pageNumber">@pageNumber</a></li>
+                                        <li class="page-item"><a class="page-link" asp-controller="Home" asp-action="Index" asp-route-pageIndex="@Model.TotalPages">Last Page</a></li>
+                                    }
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
