@@ -41,7 +41,7 @@ using .NET CLI (Make sure you have version 6.0.13 of "dotnet-ef" package install
 
 using Nuget Package Manager
 ```bash
-  dotnet ef database update
+  Update-Database
 ```
 
 Run the Project
