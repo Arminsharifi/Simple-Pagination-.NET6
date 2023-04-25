@@ -14,10 +14,10 @@ namespace Simple_Pagination_Dotnet.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index([FromQuery] QueryParameters queryParameters)
+        public async Task<IActionResult> Index([FromQuery] QueryParameters queryParameters)
         {
             if (queryParameters is null) queryParameters = new QueryParameters();
-            return View(_productRepository.GetAll(queryParameters));
+            return View(await _productRepository.GetAllAsync(queryParameters));
         }
     }
 }
